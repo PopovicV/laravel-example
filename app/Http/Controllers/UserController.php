@@ -37,17 +37,22 @@ class UserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validator = $this->validateUser($request->all());
+        try {
+            $validator = $this->validateUser($request->all());
 
-        if ($validator->fails()) {
-            return response()->json(['message' => json_encode($validator->errors())], 422);
+            if ($validator->fails()) {
+                return response()->json(['message' => json_encode($validator->errors())], 422);
+            }
+
+            $user = new User();
+            $user = $this->updateUserProps($user, $request->all());
+            $user->save();
+
+            return response()->json(['message' => 'User successfully created', 'user' => $user]);
+        } catch (Exception $exception) {
+            Log::debug($exception->getMessage());
+            return response()->json(["message" => "Error occurred. Could not create user."], 500);
         }
-
-        $user = new User();
-        $user = $this->updateUserProps($user, $request->all());
-        $user->save();
-
-        return response()->json(['message' => 'User successfully created', 'user' => $user]);
     }
 
     /**
@@ -79,17 +84,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id): JsonResponse
     {
-        $user = User::find($id);
-        $validator = $this->validateUser($request->all(), $id);
+        try {
+            $user = User::findOrFail($id);
+            $validator = $this->validateUser($request->all(), $id);
 
-        if ($validator->fails()) {
-            return response()->json(['message' => json_encode($validator->errors())], 422);
+            if ($validator->fails()) {
+                return response()->json(['message' => json_encode($validator->errors())], 422);
+            }
+
+            $user = $this->updateUserProps($user, $request->all());
+            $user->save();
+
+            return response()->json(['message' => 'User successfully updated', 'user' => $user]);
+        } catch (ModelNotFoundException $exception) {
+            Log::debug($exception->getMessage());
+            return response()->json(["message" => "User not found."], 404);
+        } catch (Exception $exception) {
+            Log::debug($exception->getMessage());
+            return response()->json(["message" => "Error occurred. Could not update user."], 500);
         }
-
-        $user = $this->updateUserProps($user, $request->all());
-        $user->save();
-
-        return response()->json(['message' => 'User successfully updated', 'user' => $user]);
     }
 
     /**
