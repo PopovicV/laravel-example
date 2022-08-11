@@ -47,7 +47,7 @@ class UserController extends Controller
         $user = $this->updateUserProps($user, $request->all());
         $user->save();
 
-        return response()->json(['message' => 'User successfully created']);
+        return response()->json(['message' => 'User successfully created', 'user' => $user]);
     }
 
     /**
@@ -89,7 +89,7 @@ class UserController extends Controller
         $user = $this->updateUserProps($user, $request->all());
         $user->save();
 
-        return response()->json(['message' => 'User successfully updated']);
+        return response()->json(['message' => 'User successfully updated', 'user' => $user]);
     }
 
     /**

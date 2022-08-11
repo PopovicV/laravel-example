@@ -47,7 +47,7 @@ class TeamController extends Controller
             $team->save();
             DB::commit();
 
-            return response()->json(['message' => 'Team successfully created']);
+            return response()->json(['message' => 'Team successfully created', 'team' => $team]);
         } catch (Exception $exception) {
             DB::rollBack();
             Log::debug($exception->getMessage());
@@ -95,7 +95,7 @@ class TeamController extends Controller
             $team->save();
             DB::commit();
 
-            return response()->json(['message' => 'Team successfully updated']);
+            return response()->json(['message' => 'Team successfully updated', 'team' => $team]);
         } catch (ModelNotFoundException $exception) {
             DB::rollBack();
             Log::debug($exception->getMessage());
