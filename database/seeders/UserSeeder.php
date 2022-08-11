@@ -1,8 +1,10 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use App\User;
-use App\Team;
+use App\Models\Team;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -15,7 +17,7 @@ class UserSeeder extends Seeder
     {
       $teams = Team::all();      
 
-      factory(App\User::class, 50)->create()->each(function ($user) use ($teams){
+      User::factory()->count(50)->create()->each(function ($user) use ($teams){
         $user->team()->associate($teams->random());
         $user->save();
       });

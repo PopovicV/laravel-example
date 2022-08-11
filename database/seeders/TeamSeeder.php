@@ -1,7 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use App\Team;
+use App\Models\Team;
 
 class TeamSeeder extends Seeder
 {
@@ -12,6 +14,7 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
-      factory(App\Team::class, 10)->create();
+      // factory(App\Team::class, 10)->create();
+      Team::factory()->count(10)->create();
     }
 }
