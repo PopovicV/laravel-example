@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TeamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +19,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resources([
+  'users' => UserController::class,
+  'teams' => TeamController::class,
+]);
+
+Route::get('/teams/{team}/users', 'TeamUserController@index');
+Route::post('/teams/{team}/users/{user}', 'TeamUserController@store');
+Route::delete('/teams/{team}/users/{user}', 'TeamUserController@destroy');
+
+
+
+
+
 

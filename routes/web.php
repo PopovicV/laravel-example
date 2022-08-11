@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/users', 'UserController@index')->name('users')->middleware('auth');
-Route::get('/profile', 'UserController@showProfile')->name('profile')->middleware('auth');
-Route::put('/edit/{id}', 'UserController@update')->name('edit')->middleware('auth');
-
-Route::get('/teams', 'TeamController@index')->name('teams')->middleware('auth');
-Route::get('/team/{id}', 'TeamController@show')->name('team')->middleware('auth');
+Route::get('/users', 'Web\UserWebController@index')->name('users')->middleware('auth');
+Route::get('/profile', 'Web\UserWebController@showProfile')->name('profile')->middleware('auth');
+Route::put('/edit/{id}', 'Web\UserWebController@update')->name('edit')->middleware('auth');
+Route::get('/teams', 'Web\TeamWebController@index')->name('teams')->middleware('auth');
+Route::get('/team/{id}', 'Web\TeamWebController@show')->name('team')->middleware('auth');
